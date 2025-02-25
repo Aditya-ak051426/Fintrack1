@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-page">
+    <h1>Personal Finance Dashboard</h1>
+
+    <div class="metrics-grid">
+        <div class="metric-card primary">
+            <h3>Monthly Income</h3>
+            <p class="value">{{ income|currency }}</p>
+        </div>
+
+        <div class="metric-card secondary">
+            <h3>Monthly Expenses</h3>
+            <p class="value">{{ monthly_total|currency }}</p>
+        </div>
+
+        <div class="metric-card accent">
+            <h3>Monthly Budget</h3>
+            <p class="value">{{ budget_total|currency }}</p>
+        </div>
+
+        <div class="metric-card success">
+            <h3>Potential Savings</h3>
+            <p class="value">{{ savings|currency }}</p>
+            <p class="subtitle">{{ savings_percent }}% of Income</p>
+        </div>
+    </div>
+
+    <div class="actions-section">
+        <h2>Quick Actions</h2>
+        <div class="actions-grid">
+            <button class="action-btn" onclick="showExpenseForm()">
+                📝 Record New Expense
+            </button>
+            <button class="action-btn" onclick="window.location.href='/budget'">
+                💰 Update Budget Plan
+            </button>
+            <button class="action-btn" onclick="window.location.href='/goals'">
+                🎯 Set Financial Goals
+            </button>
+            <button class="action-btn" onclick="exportData()">
+                📊 Export Data
+            </button>
+        </div>
+    </div>
+
+    <div class="charts-section">
+        <h2>Expenses Breakdown</h2>
+        <div id="expenses-chart"></div>
+    </div>
+
+    <div class="transactions-section">
+        <h2>Recent Transactions</h2>
+        <div id="transactions-table"></div>
+    </div>
+</div>
+
+<div id="expense-modal" class="modal">
+    <div class="modal-content">
+        <h2>Add New Expense</h2>
+        <form id="expense-form">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="expense-date" required>
+            </div>
+            <div class="form-group">
+                <label>Category</label>
+                <select id="expense-category" required>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Entertainment">Entertainment</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Food Delivery">Food Delivery</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="expense-amount" min="0.01" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" id="expense-description" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">Add Expense</button>
+                <button type="button" class="btn-secondary" onclick="hideExpenseForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

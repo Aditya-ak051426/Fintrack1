@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="goals-page">
+    <h1>Financial Goals</h1>
+
+    <div class="metrics-grid">
+        {% for goal in goals %}
+        <div class="metric-card" data-goal-name="{{ goal.name }}">
+            <h3>{{ goal.name }}</h3>
+            <p class="value">{{ goal.current|currency }} / {{ goal.target|currency }}</p>
+            <p class="subtitle">Deadline: {{ goal.deadline }}</p>
+            <div class="progress-bar">
+                <div class="progress" style="width: {{ (goal.current / goal.target * 100)|round }}%"></div>
+            </div>
+            <div class="goal-actions">
+                <button class="btn-secondary" onclick="showUpdateGoalForm('{{ goal.name }}')">Update Progress</button>
+                <button class="btn-secondary" onclick="deleteGoal('{{ goal.name }}')">Delete</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="actions-section">
+        <button class="action-btn" onclick="showGoalForm()">
+            🎯 Add New Goal
+        </button>
+    </div>
+
+    <div id="goal-modal" class="modal">
+        <div class="modal-content">
+            <h2>Add Financial Goal</h2>
+            <form id="goal-form">
+                <div class="form-group">
+                    <label>Goal Name</label>
+                    <input type="text" id="goal-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Amount (₹)</label>
+                    <input type="number" id="goal-target" min="0.01" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label>Current Amount (₹)</label>
+                    <input type="number" id="goal-current" min="0" step="0.01" value="0">
+                </div>
+                <div class="form-group">
+                    <label>Target Date</label>
+                    <input type="date" id="goal-deadline" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Add Goal</button>
+                    <button type="button" class="btn-secondary" onclick="hideGoalForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="update-goal-modal" class="modal">
+        <div class="modal-content">
+            <h2>Update Goal Progress</h2>
+            <form id="update-goal-form">
+                <input type="hidden" id="update-goal-name">
+                <div class="form-group">
+                    <label>Current Amount (₹)</label>
+                    <input type="number" id="update-goal-current" min="0" step="0.01" required>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Update Progress</button>
+                    <button type="button" class="btn-secondary" onclick="hideUpdateGoalForm()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/goals.js') }}"></script>
+{% endblock %}
+{% endblock %}

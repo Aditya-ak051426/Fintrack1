@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinTrack - Personal Finance Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">💰 FinTrack</div>
+        <hr>
+        <div class="form-group">
+            <label class="form-label">Monthly Income</label>
+            <input type="number" id="income-input" class="form-input" 
+                   value="{{ income }}" step="0.01" min="0">
+        </div>
+        <hr>
+        <nav>
+            <h3>Main Navigation</h3>
+            <ul class="nav-list">
+                <li><a href="/" class="nav-link">📊 Dashboard</a></li>
+                <li><a href="/budget" class="nav-link">💰 Budget</a></li>
+                <li><a href="/goals" class="nav-link">🎯 Goals</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% block scripts %}{% endblock %}
+</body>
+</html>
